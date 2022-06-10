@@ -1,17 +1,6 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import arrayDeepCopy from "./utility/arrayDeepCopy";
+import createSudokuGrid from "./utility/createSudokuGrid";
+import animateElement from "./utility/animateElement";
+import checkBoard from "./utility/checkBoard";
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-);
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+export { arrayDeepCopy, createSudokuGrid, animateElement, checkBoard };
