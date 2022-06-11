@@ -6,6 +6,7 @@ import {
     arrayDeepCopy,
     checkBoard,
     createSudokuGrid,
+    solveSudoku,
 } from "../../index";
 
 import "./Grid.css";
@@ -41,8 +42,29 @@ const Grid = () => {
         localStorage.setItem("currentGrid", JSON.stringify(startingGrid));
     };git
 
+    const handleSolve = () => {
+        let solvedBoard = JSON.parse(JSON.stringify(grid));
+        let solvedStatus = solveSudoku(solvedBoard);
+        if (solvedStatus === false) {
+            alert("Cannot be solved!");
+
+            return;
+        }
+
+        for (let i = 0; i < 9; i++) {
+            for (let j = 0; j < 9; j++) {
+                if (grid[i][j].value === 0) {
+                    solvedBoard[i][j].isHinted = true;
+                }
+            }
+        }
+        setGrid(solvedBoard);
+    };
+
+
+
     const handleCellClick = (row, column, isModifiable) => {
-        if (!isModifiable){
+        if (!isModifiable) {
             animateElement(".grid-table", "headShake");
             return;
         }
@@ -65,6 +87,7 @@ const Grid = () => {
     return (
         <div className="Grid">
             <h1 onClick={() => handleReset()}>Reset</h1>
+            <h1 onClick={() => handleSolve()}>Solve</h1>
 
             <table className="grid-table">
                 <tbody>
