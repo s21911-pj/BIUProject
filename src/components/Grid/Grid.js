@@ -69,16 +69,11 @@ const Grid = () => {
             return;
         }
 
+        let emptyNodePositionList = [];
         for (let i = 0; i < 9; i++) {
             for (let j = 0; j < 9; j++) {
                 if (grid[i][j].value === 0) {
-                    let newBoard = JSON.parse(JSON.stringify(grid));
-
-                    newBoard[i][j].value = solvedBoard[i][j].value;
-                    newBoard[i][j].isHinted = true;
-
-                    setGrid(newBoard);
-                    return;
+                    emptyNodePositionList.push([i, j]);
                 }
             }
         }
