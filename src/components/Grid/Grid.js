@@ -59,6 +59,7 @@ const Grid = () => {
             for (let j = 0; j < 9; j++) {
                 if (grid[i][j].value === 0) {
                     solvedBoard[i][j].isHinted = true;
+                    solvedBoard[i][j].isModifiable = false;
                 }
             }
         }
@@ -81,13 +82,25 @@ const Grid = () => {
                 }
             }
         }
-        if(emptyNodePositionList.length  == 0){
+        if(emptyNodePositionList.length  === 0){
             return;
         }
 
+        let newBoard = JSON.parse(JSON.stringify(grid));
+        const hintNode =
+            emptyNodePositionList[
+                Math.floor(Math.random() * emptyNodePositionList.length)
+                ];
+        let hint_row = hintNode[0];
+        let hint_column = hintNode[1];
 
-    };
+    newBoard[hint_row][hint_column].value =
+        solvedBoard[hint_row][hint_column].value;
+    newBoard[hint_row][hint_column].isHinted = true;
+    newBoard[hint_row][hint_column].isModifiable = false;
 
+    setCurrentGrid(newBoard);
+};
 
 
     const handleCellClick = (row, column, isModifiable) => {
