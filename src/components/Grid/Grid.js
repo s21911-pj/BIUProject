@@ -52,7 +52,7 @@ const Grid = () => {
         newGrid[row][column].value = newGrid[row][column].value + 1;
         if (newGrid[row][column].value > 9) newGrid[row][column].value = 0;
 
-        newGrid[row][column].changed = newGrid[row][column].value !== startingGrid[row][column].value;
+
 
         checkBoard(newGrid);
 
