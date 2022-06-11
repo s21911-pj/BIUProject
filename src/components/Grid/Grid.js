@@ -18,33 +18,36 @@ const Grid = () => {
     useEffect(() => {
 
         let newSudokuGrid = createSudokuGrid();
-        setStartingGrid(arrayDeepCopy(newSudokuGrid));
-        setGrid(arrayDeepCopy(newSudokuGrid));
+        setStartingGrid(arrayDeepCopy(newSudokoGrid));
+        setGrid(arrayDeepCopy(newSudokoGrid));
+        if (
+            localStorage.getItem("startingGrid") == null ||
+            localStorage.getItem("currentGrid") == null
+        ) {
+            let newSudokuGrid = createSudokuGrid();
+            setStartingGrid(arrayDeepCopy(newSudokuGrid));
+            setGrid(arrayDeepCopy(newSudokuGrid));
+
+            localStorage.setItem("startingGrid", JSON.stringify(newSudokuGrid));
+            localStorage.setItem("currentGrid", JSON.stringify(newSudokuGrid));
+        } else {
+            setStartingGrid(JSON.parse(localStorage.getItem("startingGrid")));
+            setGrid(JSON.parse(localStorage.getItem("currentGrid")));
+        }
     }, []);
 
     const handleReset = () => {
-        setGrid(arrayDeepCopy(startingGrid));
-    };
+    @@ -41,7 +52,10 @@ const Grid = () => {
 
-    const handleCellClick = (row, column, isModifiable) => {
-        if (!isModifiable){
-            animateElement(".grid-table", "headShake");
-            return;
-        }
+            checkBoard(newGrid);
 
-        let newGrid = [...grid];
 
-        newGrid[row][column].value = newGrid[row][column].value + 1;
-        if (newGrid[row][column].value > 9) newGrid[row][column].value = 0;
+            setGrid(newGrid);
+            localStorage.setItem("currentGrid", JSON.stringify(newGrid));
 
-        newGrid[row][column].changed = newGrid[row][column].value !== startingGrid[row][column].value;
+        };
 
-        checkBoard(newGrid);
-
-        setGrid(newGrid);
-    };
-
-    return (
+        return (
         <div className="Grid">
             <h1 onClick={() => handleReset()}>Reset</h1>
 
