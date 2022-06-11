@@ -36,13 +36,14 @@ const Grid = () => {
             setGrid(JSON.parse(localStorage.getItem("currentGrid")));
         }
     }, []);
-    const setCurrentGrid = (grid) => {
-
+    const setCurrentGrid = (givenGrid) => {
+        setGrid(givenGrid);
+        localStorage.setItem("currentGrid", JSON.stringify(givenGrid));
     };
 
 
     const handleReset = () => {
-        setGrid(startingGrid);
+        setCurrentGrid(startingGrid);
     };
 
     const handleSolve = () => {
@@ -80,6 +81,11 @@ const Grid = () => {
                 }
             }
         }
+        if(emptyNodePositionList.length  == 0){
+            return;
+        }
+
+
     };
 
 
