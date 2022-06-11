@@ -1,7 +1,12 @@
 import React, { useState, useEffect } from "react";
 
 import "./Game.css";
-import { Grid, ChoiceBoard, Button } from "../../components/index.js";
+import {
+    Grid,
+    ChoiceBoard,
+    Button,
+    InformationModal,
+} from "../../components/index.js";
 import {
     animateElement,
     arrayDeepCopy,
@@ -14,9 +19,10 @@ const Game = () => {
     const [grid, setGrid] = useState(null);
     const [startingGrid, setStartingGrid] = useState(null);
     const [clickValue, setClickValue] = useState(1);
+    const [showInformationModal, setShowInformationModal] = useState(false);
 
     useEffect(() => {
-        // Creating a grid for the sudoku
+
         if (
             localStorage.getItem("startingGrid") == null ||
             localStorage.getItem("currentGrid") == null
@@ -34,7 +40,7 @@ const Game = () => {
     }, []);
 
     const setCurrentGrid = (givenGrid) => {
-        // setting the value to the grid and also to the local storage
+
         setGrid(givenGrid);
         localStorage.setItem("currentGrid", JSON.stringify(givenGrid));
     };
@@ -70,7 +76,7 @@ const Game = () => {
             return;
         }
 
-        // Finding all the empty nodes
+
         let emptyNodePositionList = [];
         for (let i = 0; i < 9; i++) {
             for (let j = 0; j < 9; j++) {
@@ -84,7 +90,7 @@ const Game = () => {
             return;
         }
 
-        // Making new node and replacing the empty value with the hint
+
         let newBoard = JSON.parse(JSON.stringify(grid));
         const hintNode =
             emptyNodePositionList[
@@ -122,14 +128,23 @@ const Game = () => {
 
         checkBoard(newGrid);
 
-        // setting the value to the grid and also to the local storage
+
         setCurrentGrid(newGrid);
     };
 
     return (
         <div className="Game">
-            <h1>Sudoku Game</h1>
-            {/* TODO:Make a information modal */}
+            <h1
+                onClick={() => setShowInformationModal((show) => !show)}
+                className="main-title"
+            >
+                Sudoku Game
+            </h1>
+            {showInformationModal && (
+                <InformationModal
+                    closeModal={() => setShowInformationModal((show) => !show)}
+                />
+            )}
 
             <Grid handleCellClick={handleCellClick} grid={grid} />
 
