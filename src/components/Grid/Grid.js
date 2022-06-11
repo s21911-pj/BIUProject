@@ -37,17 +37,32 @@ const Grid = () => {
     }, []);
 
     const handleReset = () => {
-    @@ -41,7 +52,10 @@ const Grid = () => {
+        setGrid(arrayDeepCopy(startingGrid));
+        localStorage.setItem("currentGrid", JSON.stringify(startingGrid));
+    };git
 
-            checkBoard(newGrid);
+    const handleCellClick = (row, column, isModifiable) => {
+        if (!isModifiable){
+            animateElement(".grid-table", "headShake");
+            return;
+        }
+
+        let newGrid = [...grid];
+
+        newGrid[row][column].value = newGrid[row][column].value + 1;
+        if (newGrid[row][column].value > 9) newGrid[row][column].value = 0;
+
+        newGrid[row][column].changed = newGrid[row][column].value !== startingGrid[row][column].value;
+
+        checkBoard(newGrid);
 
 
-            setGrid(newGrid);
-            localStorage.setItem("currentGrid", JSON.stringify(newGrid));
+        setGrid(newGrid);
+        localStorage.setItem("currentGrid", JSON.stringify(newGrid));
 
-        };
+    };
 
-        return (
+    return (
         <div className="Grid">
             <h1 onClick={() => handleReset()}>Reset</h1>
 
