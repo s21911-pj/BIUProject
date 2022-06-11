@@ -1,17 +1,78 @@
+const isValidNode = (row, col, value, board) => {
+    const cellValue = value;
+
+
+    for (let i = 0; i < 9; i++) {
+        if (board[row][i] === cellValue) return false;
+    }
+
+
+    for (let i = 0; i < 9; i++) {
+        if (board[i][col] === cellValue) return false;
+    }
+
+
+    let x0 = Math.floor(row / 3) * 3;
+    let y0 = Math.floor(col / 3) * 3;
+    for (let i = 0; i < 3; i++) {
+        for (let j = 0; j < 3; j++) {
+            if (board[x0 + i][y0 + j] === cellValue) return false;
+        }
+    }
+
+    return true;
+};
+
+const solveRandomSudoku = (board) => {
+
+    for (let i = 0; i < 9; i++) {
+        for (let j = 0; j < 9; j++) {
+            if (board[i][j] === 0) {
+                for (let k = 1; k <= 9; k++) {
+                    let num = Math.floor(Math.random() * 9) + 1;
+                    if (isValidNode(i, j, num, board)) {
+                        board[i][j] = num;
+                        if (solveRandomSudoku(board)) return true;
+                        board[i][j] = 0;
+                    }
+                }
+                return false;
+            }
+        }
+    }
+    console.log(board);
+    return true;
+};
+
+
+
 const getSudokuGrid = () => {
     let sudokuGrid = [
-        [5, 3, 0, 0, 7, 0, 0, 0, 0],
-        [6, 0, 0, 1, 9, 5, 0, 0, 0],
-        [0, 9, 8, 0, 0, 0, 0, 6, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0],
 
-        [8, 0, 0, 0, 6, 0, 0, 0, 3],
-        [4, 0, 0, 8, 0, 3, 0, 0, 1],
-        [7, 0, 0, 0, 2, 0, 0, 0, 6],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0],
 
-        [0, 6, 0, 0, 0, 0, 2, 8, 0],
-        [0, 0, 0, 4, 1, 9, 0, 0, 5],
-        [0, 0, 0, 0, 8, 0, 0, 7, 9],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0],
     ];
+
+    solveRandomSudoku(sudokuGrid);
+
+    let emptyPositions = 81;
+    for (let i = 0; i <emptyPositions; i++) {
+        let row = Math.floor(Math.random() * 9);
+        let col = Math.floor(Math.random() * 9);
+        sudokuGrid[row][col] = 0;
+    }
+
+    console.log(sudokuGrid);
+
+
     return sudokuGrid;
 };
 
@@ -30,10 +91,10 @@ const createSudokuGrid = () => {
     const numberGrid = getSudokuGrid();
     let sudokuGrid = [];
 
-    for (let i = 0; i <9;i++){
+    for (let i = 0; i <9; i++) {
         let row = [];
-        for(let j = 0; j < 9; j++){
-            let isModifiable = (numberGrid[i][j] === 0);
+        for (let j = 0; j < 9; j++) {
+            let isModifiable = numberGrid[i][j] === 0;
             let node = getNode(i, j, numberGrid[i][j], isModifiable);
             row.push(node);
         }
@@ -41,6 +102,6 @@ const createSudokuGrid = () => {
     }
 
     return sudokuGrid;
-}
+};
 
 export default createSudokuGrid;
