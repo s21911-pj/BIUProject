@@ -19,8 +19,8 @@ const Grid = () => {
     useEffect(() => {
 
         let newSudokuGrid = createSudokuGrid();
-        setStartingGrid(arrayDeepCopy(newSudokoGrid));
-        setGrid(arrayDeepCopy(newSudokoGrid));
+        setStartingGrid(arrayDeepCopy(newSudokuGrid));
+        setGrid(arrayDeepCopy(newSudokuGrid));
         if (
             localStorage.getItem("startingGrid") == null ||
             localStorage.getItem("currentGrid") == null
@@ -36,11 +36,14 @@ const Grid = () => {
             setGrid(JSON.parse(localStorage.getItem("currentGrid")));
         }
     }, []);
+    const setCurrentGrid = (grid) => {
+
+    };
+
 
     const handleReset = () => {
-        setGrid(arrayDeepCopy(startingGrid));
-        localStorage.setItem("currentGrid", JSON.stringify(startingGrid));
-    };git
+        setGrid(startingGrid);
+    };
 
     const handleSolve = () => {
         let solvedBoard = JSON.parse(JSON.stringify(grid));
@@ -58,7 +61,7 @@ const Grid = () => {
                 }
             }
         }
-        setGrid(solvedBoard);
+        setCurrentGrid(solvedBoard);
     };
 
     const handleHint = () => {
@@ -97,8 +100,7 @@ const Grid = () => {
         checkBoard(newGrid);
 
 
-        setGrid(newGrid);
-        localStorage.setItem("currentGrid", JSON.stringify(newGrid));
+        setCurrentGrid(newBoard);
 
     };
 
