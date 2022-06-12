@@ -23,6 +23,26 @@ const isValidNode = (row, col, value, board) => {
     return true;
 };
 
+const countSudokuSolution = (board) => {
+
+    for (let i = 0; i < 9; i++) {
+        for (let j = 0; j < 9; j++) {
+            if (board[i][j] === 0) {
+                let count = 0;
+                for (let k = 1; k <= 9; k++) {
+                    if (isValidNode(i, j, k, board)) {
+                        board[i][j] = k;
+                        count += countSudokuSolution(board);
+                        board[i][j] = 0;
+                    }
+                }
+                return count;
+            }
+        }
+    }
+    return 1;
+};
+
 const solveRandomSudoku = (board) => {
 
     for (let i = 0; i < 9; i++) {
@@ -40,7 +60,7 @@ const solveRandomSudoku = (board) => {
             }
         }
     }
-    console.log(board);
+
     return true;
 };
 
@@ -63,14 +83,32 @@ const getSudokuGrid = () => {
 
     solveRandomSudoku(sudokuGrid);
 
-    let emptyPositions = 81;
-    for (let i = 0; i <emptyPositions; i++) {
-        let row = Math.floor(Math.random() * 9);
-        let col = Math.floor(Math.random() * 9);
-        sudokuGrid[row][col] = 0;
+    let emptyCells = 0;
+    let suffledCells = [];
+    for (let i = 0; i < 81; i++){
+        suffledCells.push(i);
     }
 
-    console.log(sudokuGrid);
+    suffledCells.sort(() => Math.random() - 0.5);
+
+    let index = 0;
+    while(emptyCells <= 51 & index < 81){
+        if(suffledCells.length === 0) break;
+
+        let cell = suffledCells[index];
+        index++;
+
+        let i = Math.floor(cell / 9);
+        let j = cell % 9;
+
+        let value = sudokuGrid[i][j];
+        sudokuGrid[i][j] = 0;
+
+        let count = countSudokuSolution(sudokuGrid);
+
+        if(count === 1) emptyCells++;
+        else sudokuGrid[i][j] = value;
+    }
 
 
     return sudokuGrid;
