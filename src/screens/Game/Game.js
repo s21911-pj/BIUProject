@@ -9,6 +9,7 @@ import {
     InformationModal,
     NoSolutionFoundModal,
     GameDetails,
+    DifficultySelectionModal,
 } from "../../components/index.js";
 import {
     animateElement,
@@ -26,15 +27,21 @@ const Game = () => {
     const [movesTaken, setMovesTaken] = useLocalStorage("movesTaken", 0);
     const [hintsTaken, setHintsTaken] = useLocalStorage("hintsTaken", 0);
     const [isPlayerWon, setIsPlayerWon] = useLocalStorage("playerWon", false);
-    const [pressedSolve, setPressedSolve] = useLocalStorage("pressedSolve", false);
+    const [pressedSolve, setPressedSolve] = useLocalStorage(
+        "pressedSolve",
+        false
+    );
 
     const [startTime, setStartTime] = useLocalStorage("startTime", () =>
         Date().toLocaleString()
     );
 
     const [showInformationModal, setShowInformationModal] = useState(false);
-    const [showNoSolutionFoundModal, setShowNoSolutionFoundModal] = useState(false);
+    const [showNoSolutionFoundModal, setShowNoSolutionFoundModal] =
+        useState(false);
     const [showGameDetails, setShowGameDetails] = useState(false);
+    const [showDifficultySelectionModal, setShowDifficultySelectionModal] =
+        useState(false);
 
     useEffect(() => {
 
@@ -109,8 +116,11 @@ const Game = () => {
         setGrid(newBoard);
     };
 
-    const handleNewGame = () => {
-        let newSudokuGrid = createSudokuGrid();
+    const handleNewGame = (maxEmptyCellsCount) => {
+
+        console.log("start");
+        let newSudokuGrid = createSudokuGrid(maxEmptyCellsCount);
+        console.log("stop");
         setStartingGrid(arrayDeepCopy(newSudokuGrid));
         setGrid(arrayDeepCopy(newSudokuGrid));
 
@@ -119,12 +129,14 @@ const Game = () => {
         setIsPlayerWon(false);
         setPressedSolve(false);
         setStartTime(() => Date().toLocaleString());
+
+        setShowDifficultySelectionModal((show) => !show);
     };
 
     const handleClearBoard = () => {
         setIsPlayerWon(false);
         setGrid(arrayDeepCopy(startingGrid));
-    }
+    };
 
     const handleCellClick = (row, column, isModifiable) => {
         if (!isModifiable) {
@@ -150,7 +162,7 @@ const Game = () => {
 
         setGrid(newGrid);
     };
-
+    console.log("....");
     return (
         <div className="Game">
             <div className="show-game-detail-container-button">
@@ -176,6 +188,15 @@ const Game = () => {
                     closeModal={() => setShowNoSolutionFoundModal((show) => !show)}
                 />
             )}
+            {showDifficultySelectionModal && (
+                <DifficultySelectionModal
+                    closeModal={() => setShowDifficultySelectionModal((show) => !show)}
+                    handleNewGame={handleNewGame}
+                />
+            )}
+
+
+
             {showGameDetails && (
                 <GameDetails
                     closeModal={() => setShowGameDetails((show) => !show)}
@@ -207,7 +228,7 @@ const Game = () => {
                     text="Hint"
                 />
                 <Button
-                    onClick={handleNewGame}
+                    onClick={() => setShowDifficultySelectionModal((show) => !show)}
                     buttonStyle="btn--danger--solid"
                     text="New Game"
                 />

@@ -66,7 +66,7 @@ const solveRandomSudoku = (board) => {
 
 
 
-const getSudokuGrid = () => {
+const getSudokuGrid = (maxEmptyCellsCount) => {
     let sudokuGrid = [
         [0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -85,15 +85,15 @@ const getSudokuGrid = () => {
 
     let emptyCells = 0;
     let suffledCells = [];
-    for (let i = 0; i < 81; i++){
+    for (let i = 0; i < 81; i++) {
         suffledCells.push(i);
     }
 
     suffledCells.sort(() => Math.random() - 0.5);
 
     let index = 0;
-    while(emptyCells <= 51 & index < 81){
-        if(suffledCells.length === 0) break;
+    while ((emptyCells <= maxEmptyCellsCount) & (index < 81)) {
+        if (suffledCells.length === 0) break;
 
         let cell = suffledCells[index];
         index++;
@@ -106,7 +106,7 @@ const getSudokuGrid = () => {
 
         let count = countSudokuSolution(sudokuGrid);
 
-        if(count === 1) emptyCells++;
+        if (count === 1) emptyCells++;
         else sudokuGrid[i][j] = value;
     }
 
@@ -125,8 +125,8 @@ const getNode = (row, column, value, isModifiable) => {
     };
 };
 
-const createSudokuGrid = () => {
-    const numberGrid = getSudokuGrid();
+const createSudokuGrid = (maxEmptyCellsCount) => {
+    const numberGrid = getSudokuGrid(maxEmptyCellsCount);
     let sudokuGrid = [];
 
     for (let i = 0; i <9; i++) {
