@@ -1,17 +1,20 @@
 import React, { useState, useEffect } from "react";
 
 import "./Game.css";
+import { AiOutlineMenu } from "react-icons/ai";
 import {
     Grid,
     ChoiceBoard,
     Button,
     InformationModal,
     NoSolutionFoundModal,
+    GameDetails,
 } from "../../components/index.js";
 import {
     animateElement,
     arrayDeepCopy,
     checkBoard,
+    checkPlayerWon,
     createSudokuGrid,
     solveSudoku,
 } from "../../utility";
@@ -22,12 +25,16 @@ const Game = () => {
     const [clickValue, setClickValue] = useLocalStorage("clickValue", 1);
     const [movesTaken, setMovesTaken] = useLocalStorage("movesTaken", 0);
     const [hintsTaken, setHintsTaken] = useLocalStorage("hintsTaken", 0);
+    const [isPlayerWon, setIsPlayerWon] = useLocalStorage("playerWon", false);
+    const [pressedSolve, setPressedSolve] = useLocalStorage("pressedSolve", false);
+
     const [startTime, setStartTime] = useLocalStorage("startTime", () =>
         Date().toLocaleString()
     );
 
     const [showInformationModal, setShowInformationModal] = useState(false);
     const [showNoSolutionFoundModal, setShowNoSolutionFoundModal] = useState(false);
+    const [showGameDetails, setShowGameDetails] = useState(false);
 
     useEffect(() => {
 
@@ -58,6 +65,9 @@ const Game = () => {
             }
         }
         setHintsTaken((hints) => hints + newHints);
+        setIsPlayerWon(true);
+        setShowGameDetails(true);
+        setPressedSolve(true);
         setGrid(solvedBoard);
     };
 
@@ -79,9 +89,8 @@ const Game = () => {
             }
         }
 
-        if (emptyNodePositionList.length === 0) {
-            return;
-        }
+        if (emptyNodePositionList.length === 0) return;
+        if (emptyNodePositionList.length === 1) setIsPlayerWon(true);
 
 
         let newBoard = arrayDeepCopy(grid);
@@ -107,8 +116,15 @@ const Game = () => {
 
         setMovesTaken(0);
         setHintsTaken(0);
+        setIsPlayerWon(false);
+        setPressedSolve(false);
         setStartTime(() => Date().toLocaleString());
     };
+
+    const handleClearBoard = () => {
+        setIsPlayerWon(false);
+        setGrid(arrayDeepCopy(startingGrid));
+    }
 
     const handleCellClick = (row, column, isModifiable) => {
         if (!isModifiable) {
@@ -123,12 +139,27 @@ const Game = () => {
 
         checkBoard(newGrid);
 
+        let playerWon = checkPlayerWon(newGrid);
+        if (playerWon) {
+            setIsPlayerWon(true);
+            setShowGameDetails(true);
+        }
+
+
+
 
         setGrid(newGrid);
     };
 
     return (
         <div className="Game">
+            <div className="show-game-detail-container-button">
+                <button onClick={() => setShowGameDetails((show) => !show)}>
+                    <AiOutlineMenu />
+                </button>
+            </div>
+
+
             <h1
                 onClick={() => setShowInformationModal((show) => !show)}
                 className="main-title"
@@ -145,14 +176,23 @@ const Game = () => {
                     closeModal={() => setShowNoSolutionFoundModal((show) => !show)}
                 />
             )}
-
+            {showGameDetails && (
+                <GameDetails
+                    closeModal={() => setShowGameDetails((show) => !show)}
+                    movesTaken={movesTaken}
+                    hintsTaken={hintsTaken}
+                    startTime={startTime}
+                    isPlayerWon={isPlayerWon}
+                    pressedSolve={pressedSolve}
+                />
+            )}
             <Grid handleCellClick={handleCellClick} grid={grid} />
 
             <ChoiceBoard setClickValue={setClickValue} selected={clickValue} />
 
             <div className="action-container">
                 <Button
-                    onClick={() => setGrid(arrayDeepCopy(startingGrid))}
+                    onClick={handleClearBoard}
                     buttonStyle="btn--primary--solid"
                     text="Clear"
                 />
