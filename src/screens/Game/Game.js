@@ -16,10 +16,17 @@ import {
 } from "../../utility";
 
 const Game = () => {
-    const [grid, setGrid] = useLocalStorage("currentGrid",null);
+    const [grid, setGrid] = useLocalStorage("currentGrid", null);
     const [startingGrid, setStartingGrid] = useLocalStorage("startingGrid", null);
     const [clickValue, setClickValue] = useLocalStorage("clickValue", 1);
     const [showInformationModal, setShowInformationModal] = useState(false);
+    const [movesTaken, setMovesTaken] = useLocalStorage("movesTaken", 0);
+    const [hintsTaken, setHintsTaken] = useLocalStorage("hintsTaken", 0);
+    const [startTime, setStartTime] = useLocalStorage("startTime", () =>
+        Date().toLocaleString()
+    );
+
+
 
     useEffect(() => {
 
@@ -62,7 +69,7 @@ const Game = () => {
             alert("Cannot be solved!");
             return;
         }
-
+        setHintsTaken((hints) => hints + 1);
 
         let emptyNodePositionList = [];
         for (let i = 0; i < 9; i++) {
@@ -99,7 +106,9 @@ const Game = () => {
         setStartingGrid(arrayDeepCopy(newSudokuGrid));
         setGrid(arrayDeepCopy(newSudokuGrid));
 
-
+        setMovesTaken(0);
+        setHintsTaken(0);
+        setStartTime(() => Date().toLocaleString());
     };
 
     const handleCellClick = (row, column, isModifiable) => {
@@ -107,6 +116,7 @@ const Game = () => {
             animateElement(".grid-table", "headShake");
             return;
         }
+        if (clickValue !== 0) setMovesTaken((moves) => moves + 1);
 
         let newGrid = arrayDeepCopy(grid);
 
