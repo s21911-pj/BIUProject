@@ -58,4 +58,6 @@
 
 .animation-container{
     width: 40%;
+    width: auto;
+    height: 30vh;
 } 
