@@ -75,7 +75,7 @@ const Game = () => {
         let solvedBoard = arrayDeepCopy(grid);
         let solvedStatus = solveSudoku(solvedBoard);
         if (solvedStatus === false) {
-            alert("Cannot be solved!");
+            setShowNoSolutionFoundModal((show) => !show);
             return;
         }
         setHintsTaken((hints) => hints + 1);
