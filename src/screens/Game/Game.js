@@ -6,6 +6,7 @@ import {
     ChoiceBoard,
     Button,
     InformationModal,
+    NoSolutionFoundModal,
 } from "../../components/index.js";
 import {
     animateElement,
@@ -19,14 +20,14 @@ const Game = () => {
     const [grid, setGrid] = useLocalStorage("currentGrid", null);
     const [startingGrid, setStartingGrid] = useLocalStorage("startingGrid", null);
     const [clickValue, setClickValue] = useLocalStorage("clickValue", 1);
-    const [showInformationModal, setShowInformationModal] = useState(false);
     const [movesTaken, setMovesTaken] = useLocalStorage("movesTaken", 0);
     const [hintsTaken, setHintsTaken] = useLocalStorage("hintsTaken", 0);
     const [startTime, setStartTime] = useLocalStorage("startTime", () =>
         Date().toLocaleString()
     );
 
-
+    const [showInformationModal, setShowInformationModal] = useState(false);
+    const [showNoSolutionFoundModal, setShowNoSolutionFoundModal] = useState(false);
 
     useEffect(() => {
 
@@ -43,7 +44,7 @@ const Game = () => {
         let solvedBoard = arrayDeepCopy(grid);
         let solvedStatus = solveSudoku(solvedBoard);
         if (solvedStatus === false) {
-            alert("Cannot be solved!");
+            setShowNoSolutionFoundModal((show) => !show);
             return;
         }
         let newHints = 0;
@@ -137,6 +138,11 @@ const Game = () => {
             {showInformationModal && (
                 <InformationModal
                     closeModal={() => setShowInformationModal((show) => !show)}
+                />
+            )}
+            {showNoSolutionFoundModal && (
+                <NoSolutionFoundModal
+                    closeModal={() => setShowNoSolutionFoundModal((show) => !show)}
                 />
             )}
 
