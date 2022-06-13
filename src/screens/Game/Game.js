@@ -1,4 +1,4 @@
-import React, { useState} from "react";
+import React, { useState } from "react";
 
 import "./Game.css";
 import { AiOutlineMenu } from "react-icons/ai";
@@ -21,6 +21,7 @@ import {
 } from "../../utility";
 
 import useLocalStorage from "../../hooks/useLocalStorage";
+import getHint from "../../utility/getHint";
 
 const easyMaxEmptyCells = 30;
 const mediumMaxEmptyCells = 40;
@@ -80,41 +81,27 @@ const Game = () => {
     };
 
     const handleHint = () => {
-        let solvedBoard = arrayDeepCopy(grid);
-        let solvedStatus = solveSudoku(solvedBoard);
-        if (solvedStatus === false) {
+
+        if (isPlayerWon) return;
+
+
+        let hintResponse = getHint(grid);
+
+
+        if (hintResponse.solvedStatus === false) {
             setShowNoSolutionFoundModal((show) => !show);
             return;
         }
+        setGrid(hintResponse.board);
+
         setHintsTaken((hints) => hints + 1);
 
-        let emptyNodePositionList = [];
-        for (let i = 0; i < 9; i++) {
-            for (let j = 0; j < 9; j++) {
-                if (grid[i][j].value === 0) {
-                    emptyNodePositionList.push([i, j]);
-                }
-            }
+        let playerWon = checkPlayerWon(hintResponse.board);
+        if (playerWon) {
+            setIsPlayerWon(true);
+            setShowGameDetails(true);
         }
 
-        if (emptyNodePositionList.length === 0) return;
-        if (emptyNodePositionList.length === 1) setIsPlayerWon(true);
-
-
-        let newBoard = arrayDeepCopy(grid);
-        const hintNode =
-            emptyNodePositionList[
-                Math.floor(Math.random() * emptyNodePositionList.length)
-                ];
-        let hint_row = hintNode[0];
-        let hint_column = hintNode[1];
-
-        newBoard[hint_row][hint_column].value =
-            solvedBoard[hint_row][hint_column].value;
-        newBoard[hint_row][hint_column].isHinted = true;
-        newBoard[hint_row][hint_column].isModifiable = false;
-
-        setGrid(newBoard);
     };
 
     const handleNewGame = (maxEmptyCellsCount) => {
@@ -167,7 +154,7 @@ const Game = () => {
     };
     console.log("....");
 
-    if (grid == null && startingGrid == null)handleNewGame(gameMode);
+    if (grid == null && startingGrid == null) handleNewGame(gameMode);
     return (
         <div className="Game">
             <div className="show-game-detail-container-button">
