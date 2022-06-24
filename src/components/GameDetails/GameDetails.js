@@ -15,6 +15,8 @@ const GameDetails = ({
                          gameMode,
                          mediumMaxEmptyCells,
                          hardMaxEmptyCells,
+                         gamesWon,
+
                      }) => {
     let gameModeName = "Easy";
     if(gameMode === mediumMaxEmptyCells) gameModeName = "Medium";
@@ -61,6 +63,7 @@ const GameDetails = ({
                     <p>Game mode: {gameModeName}</p>
                     <p>Moves Played: {movesTaken}</p>
                     <p>Hints Taken: {hintsTaken}</p>
+                    <p>Games Won: {gamesWon}</p>
                     <small>Started at: {startTime.split("GMT")[0]}</small>
                 </div>
                 <div className="modal-footer">

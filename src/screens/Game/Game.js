@@ -35,6 +35,7 @@ const Game = () => {
         "gameMode",
         mediumMaxEmptyCells
     );
+    const [gamesWon, setGamesWon] = useLocalStorage("gamesWon",0);
     const [movesTaken, setMovesTaken] = useLocalStorage("movesTaken", 0);
     const [hintsTaken, setHintsTaken] = useLocalStorage("hintsTaken", 0);
     const [isPlayerWon, setIsPlayerWon] = useLocalStorage("playerWon", false);
@@ -78,6 +79,7 @@ const Game = () => {
         setShowGameDetails(true);
         setPressedSolve(true);
         setGrid(solvedBoard);
+
     };
 
     const handleHint = () => {
@@ -113,7 +115,6 @@ const Game = () => {
         setGrid(arrayDeepCopy(newSudokuGrid));
 
         setGameMode(maxEmptyCellsCount);
-
         setMovesTaken(0);
         setHintsTaken(0);
         setIsPlayerWon(false);
@@ -143,8 +144,10 @@ const Game = () => {
 
         let playerWon = checkPlayerWon(newGrid);
         if (playerWon) {
+            setGamesWon(gamesWon + 1);
             setIsPlayerWon(true);
             setShowGameDetails(true);
+
         }
 
 
@@ -152,6 +155,8 @@ const Game = () => {
 
         setGrid(newGrid);
     };
+
+
     console.log("....");
 
     if (grid == null && startingGrid == null) handleNewGame(gameMode);
@@ -203,6 +208,7 @@ const Game = () => {
                     gameMode={gameMode}
                     mediumMaxEmptyCells={mediumMaxEmptyCells}
                     hardMaxEmptyCells={hardMaxEmptyCells}
+                    gamesWon={gamesWon}
                 />
             )}
             <Grid handleCellClick={handleCellClick} grid={grid} />

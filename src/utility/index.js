@@ -6,7 +6,7 @@ import solveSudoku from "./solveSudoku";
 import checkPlayerWon from "./checkPlayerWon";
 import getHint from "./getHint";
 
-export { arrayDeepCopy, createSudokuGrid, animateElement, checkBoard, solveSudoku };
+
 export {
     arrayDeepCopy,
     createSudokuGrid,

@@ -1,6 +1,6 @@
 import React from "react";
 import "./Grid.css";
-import "animate.css";
+
 import { Node } from "./../index.js";
 
 const Grid = ({ grid, handleCellClick }) => {
