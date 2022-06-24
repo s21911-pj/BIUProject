@@ -36,6 +36,9 @@ const Game = () => {
         mediumMaxEmptyCells
     );
     const [gamesWon, setGamesWon] = useLocalStorage("gamesWon",0);
+    const [easyGameWon, setEasyGameWon] = useLocalStorage("easyGameWon",0);
+    const [mediumGameWon, setMediumGameWon] = useLocalStorage("mediumGameWon",0);
+    const [hardGameWon, setHardGameWon] = useLocalStorage("hardGameWon",0);
     const [movesTaken, setMovesTaken] = useLocalStorage("movesTaken", 0);
     const [hintsTaken, setHintsTaken] = useLocalStorage("hintsTaken", 0);
     const [isPlayerWon, setIsPlayerWon] = useLocalStorage("playerWon", false);
@@ -74,6 +77,9 @@ const Game = () => {
                 }
             }
         }
+/*        setEasyGameWon(easyGameWon + 1);
+        setMediumGameWon(mediumGameWon + 1);
+        setHardGameWon(hardGameWon + 1);*/
         setHintsTaken((hints) => hints + newHints);
         setIsPlayerWon(true);
         setShowGameDetails(true);
@@ -148,6 +154,13 @@ const Game = () => {
             setIsPlayerWon(true);
             setShowGameDetails(true);
 
+            if (playerWon && easyMaxEmptyCells == 30){
+                setEasyGameWon(easyGameWon + 1);
+            }else if(playerWon && mediumMaxEmptyCells == 40){
+                setMediumGameWon(mediumGameWon + 1);
+            }else if (playerWon && hardMaxEmptyCells == 50){
+                setHardGameWon(hardGameWon + 1);
+            }
         }
 
 
@@ -209,6 +222,9 @@ const Game = () => {
                     mediumMaxEmptyCells={mediumMaxEmptyCells}
                     hardMaxEmptyCells={hardMaxEmptyCells}
                     gamesWon={gamesWon}
+                    easyGameWon={easyGameWon}
+                    mediumGameWon={mediumGameWon}
+                    hardGameWon={hardGameWon}
                 />
             )}
             <Grid handleCellClick={handleCellClick} grid={grid} />
