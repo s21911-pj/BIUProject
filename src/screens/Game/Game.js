@@ -154,11 +154,11 @@ const Game = () => {
             setIsPlayerWon(true);
             setShowGameDetails(true);
 
-            if (playerWon && easyMaxEmptyCells == 30){
+            if (playerWon && gameMode === easyMaxEmptyCells){
                 setEasyGameWon(easyGameWon + 1);
-            }else if(playerWon && mediumMaxEmptyCells == 40){
+            }else if(playerWon && gameMode === mediumMaxEmptyCells){
                 setMediumGameWon(mediumGameWon + 1);
-            }else if (playerWon && hardMaxEmptyCells == 50){
+            }else if (playerWon && gameMode === hardMaxEmptyCells){
                 setHardGameWon(hardGameWon + 1);
             }
         }

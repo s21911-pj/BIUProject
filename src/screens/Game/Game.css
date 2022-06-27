@@ -19,8 +19,9 @@
 }
 
 .main-title {
+    color: black; text-shadow: black 0.1em 0.1em 0.2em;
     margin-bottom: 10px;
-    text-decoration: underline;
+
 }
 
 .show-game-detail-container-button {
