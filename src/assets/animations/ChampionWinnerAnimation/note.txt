@@ -1,5 +1,5 @@
-{% comment %} Ninja & Kids - #IStayHome
-lottieFiles {% endcomment %}
-Game Complete
-Selva Kumar S S
-LottieFiles
+Animation : Satisfied Bear
+
+taken from : https://lottiefiles.com/featured?page=2
+
+Designed by bashir
