@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/BIUProject/static/css/main.e32e2ffd.css",
+    "main.js": "/BIUProject/static/js/main.a3a2211c.js",
+    "static/js/787.925a2221.chunk.js": "/BIUProject/static/js/787.925a2221.chunk.js",
+    "index.html": "/BIUProject/index.html",
+    "main.e32e2ffd.css.map": "/BIUProject/static/css/main.e32e2ffd.css.map",
+    "main.a3a2211c.js.map": "/BIUProject/static/js/main.a3a2211c.js.map",
+    "787.925a2221.chunk.js.map": "/BIUProject/static/js/787.925a2221.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.e32e2ffd.css",
+    "static/js/main.a3a2211c.js"
+  ]
+}
