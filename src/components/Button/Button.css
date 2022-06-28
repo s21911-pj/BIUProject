@@ -24,7 +24,7 @@
     transform: translateY(-3px);
 }
 
-/* Button colors and styles */
+
 .btn--primary--solid {
     background-color: var(--primary);
     color: var(--white);
