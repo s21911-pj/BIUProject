@@ -1,5 +1,7 @@
  Hello!
  Welcome in my App! Take some fun and use this link and download App: https://github.com/s21911-pj/BIUProject.git. Then use commands below and have fun:)
+ or:
+ Use this link to play : https://s21911-pj.github.io/BIUProject/
 
 # Getting Started with Create React App
 
